@@ -1,7 +1,9 @@
 import discord
+import time
 from discord.ext import commands
 from discord.ui import Select, View
 from discord import Intents
+from typing import Optional
 
 intents: Intents = Intents.default()
 intents.message_content = True
@@ -147,8 +149,20 @@ async def delete_all_schedule_event_day(interaction, event_name: str) -> None:
     await interaction.response.send_message(message)
     return
 
+@bot.tree.command(name="timer")
+async def show_availability_day(interaction, minutes: int, message: Optional[str]) -> None:
+    if message == None:
+        message = "Time's up!!!"
+
+    await interaction.response.send_message("Timer has been set for " +str(minutes)+" minutes")
+
+    time.sleep(minutes*60)
+
+    await interaction.followup.send(message)
+    return
+
 def main() -> None:
-    bot.run("Token goes here")
+    bot.run("TOKEN")
     return
 
 if __name__ == "__main__": 
