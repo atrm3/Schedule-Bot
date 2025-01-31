@@ -1,5 +1,6 @@
 import discord
 import time
+import random
 from discord.ext import commands
 from discord.ui import Select, View
 from discord import Intents
@@ -159,6 +160,28 @@ async def show_availability_day(interaction, minutes: int, message: Optional[str
     time.sleep(minutes*60)
 
     await interaction.followup.send(message)
+    return
+
+@bot.tree.command(name="roll")
+async def show_availability_day(interaction, d: int, dice_count: Optional[int]) -> None:
+    if dice_count == None:
+        dice_count =  1
+
+    dices = []
+    sum = 0
+    for rolls in range(dice_count):
+        rand = random.randint(1,d)
+        dices.append(rand)
+        sum += rand
+
+    message = "Your rolls were\n"
+
+    for i in dices:
+        message += str(i) + " "
+
+    message += "\nTotal = " + str(sum)
+
+    await interaction.response.send_message(message)
     return
 
 def main() -> None:
