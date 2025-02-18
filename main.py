@@ -8,6 +8,7 @@ from typing import Optional
 
 intents: Intents = Intents.default()
 intents.message_content = True
+allowed_mention = discord.AllowedMentions.all()
 bot = commands.Bot(command_prefix='/', intents=intents)
 
 all_schedule_events = []
@@ -150,10 +151,11 @@ async def delete_all_schedule_event_day(interaction, event_name: str) -> None:
     await interaction.response.send_message(message)
     return
 
+#Timer for minutes
 @bot.tree.command(name="timer")
 async def show_availability_day(interaction, minutes: int, message: Optional[str]) -> None:
     if message == None:
-        message = "Time's up!!!"
+        message = "<@{}>Time's up!!!".format(interaction.user.id)
 
     await interaction.response.send_message("Timer has been set for " +str(minutes)+" minutes")
 
@@ -162,6 +164,7 @@ async def show_availability_day(interaction, minutes: int, message: Optional[str
     await interaction.followup.send(message)
     return
 
+#Roll dices 
 @bot.tree.command(name="roll")
 async def show_availability_day(interaction, d: int, dice_count: Optional[int]) -> None:
     if dice_count == None:
@@ -174,14 +177,14 @@ async def show_availability_day(interaction, d: int, dice_count: Optional[int]) 
         dices.append(rand)
         sum += rand
 
-    message = "Your rolls were\n"
+    message = "<@{}>Your rolls were\n".format(interaction.user.id)
 
     for i in dices:
         message += str(i) + " "
 
     message += "\nTotal = " + str(sum)
 
-    await interaction.response.send_message(message)
+    await interaction.response.send_message(message, allowed_mentions = allowed_mention)
     return
 
 def main() -> None:
