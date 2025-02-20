@@ -166,7 +166,7 @@ async def show_availability_day(interaction, minutes: int, message: Optional[str
 
 #Roll dices 
 @bot.tree.command(name="roll")
-async def show_availability_day(interaction, d: int, dice_count: Optional[int]) -> None:
+async def roll_dice(interaction, d: int, dice_count: Optional[int]) -> None:
     if dice_count == None:
         dice_count =  1
 
@@ -186,6 +186,19 @@ async def show_availability_day(interaction, d: int, dice_count: Optional[int]) 
 
     await interaction.response.send_message(message, allowed_mentions = allowed_mention)
     return
+
+#Flip a coin
+@bot.tree.command(name="flip_coin")
+async def flip_coin(interaction) -> None:
+    face = random.randint(0,1)
+    if face == 0:
+        file_name = "assets/Coin_Tail_Side.png"
+    else:
+        file_name = "assets/Coin_Head_Side.png"
+
+    await interaction.response.send_message(file=discord.File(file_name))
+    return
+    
 
 def main() -> None:
     bot.run("TOKEN")
